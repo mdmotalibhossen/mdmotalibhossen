@@ -1,12 +1,24 @@
-- 👋 Hi, I’m @mdmotalibhossen
-- 👀 I’m interested in ...
-- 🌱 I’m currently learning ...
-- 💞️ I’m looking to collaborate on ...
-- 📫 How to reach me ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
+-const express = require('express');
+const app = express();
+const port = 3000;
 
-<!---
-mdmotalibhossen/mdmotalibhossen is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+app.use(express.json());
+
+let transactions = [];
+
+app.post('/addTransaction', (req, res) => {
+  const { amount, nationalID } = req.body;
+
+  if (nationalID.length === 13) {
+    const dividend = amount * 0.20;
+    const transaction = { amount, dividend, nationalID };
+    transactions.push(transaction);
+    res.status(200).json(transaction);
+  } else {
+    res.status(400).json({ error: 'অবৈধ জাতীয় আইডি!' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
